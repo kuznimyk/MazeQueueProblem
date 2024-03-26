@@ -1,4 +1,3 @@
-import java.util.Stack;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -50,9 +49,21 @@ public class Main {
             }
         }
 
+        int[] start = new int[2];
+        for (int i =0; i < rowCounter;i++){
+            if (symbolArr[i][0] == ' '){
+                start[0] = i;
+                start[1] = 0;
+                break;
+            }
+        }
+        MazeSolver solve = new MazeSolver(symbolArr,rowCounter,colCounter,spaces,start);
+        solve.solveMaze(start[0],start[1]);
 
+        solve.getResult();
 
     }
+
     public static int countSpaces(String maze){
         char[] mazeArr = maze.toCharArray();
         int spaceCounter = 0;
