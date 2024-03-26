@@ -1,16 +1,27 @@
 import java.util.Stack;
 public class MazeSolver {
-
+    /* maze that has traversed paths  */
     char[][] maze;
+    /* maze that has only straight path to the exit */
     char[][] mazeRes;
+    /* number of rows */
     int rows;
+    /* number of columns */
     int cols;
+    /* number of spaces in the maze */
     int spaceCounter;
 
+    /* boolen variable that defines whether the maze is solved */
     boolean solved;
+    /* starting point of the maze */
     int[] start;
+
+    /* counts the amount of spaces filled */
     int spaceFilled ;
+    /* stack */
     Stack<Integer[]> stack;
+
+    /* constructor that initializes variables */
     public MazeSolver(char[][] maze, int rows, int cols, int spaceCounter, int[] start){
         this.maze = maze;
         this.rows = rows;
@@ -31,16 +42,10 @@ public class MazeSolver {
 
     }
 
+    /* recursion algorithm that solves the maze */
     public void solveMaze(int i, int j){
 
-        System.out.println("\n\n");
-        for(int k = 0;k < rows;k++){
-            for (int n = 0;n < cols;n++){
-                System.out.print(maze[k][n]);
-            }
-            System.out.println();
-        }
-
+        /* checks if the maze is solved or if the stack is empty then end the recursion */
         if ((i == 0||j == cols - 1 || i == rows - 1  || solved == true) && stack.empty() == false) {
             if (j == cols- 1){
                 stack.push(new Integer[] {i, cols - 1});
@@ -58,6 +63,13 @@ public class MazeSolver {
         }
         else if(spaceFilled < spaceCounter - 1)
         {
+            /* checks for the free space on the right then on top then bottom and then left.
+            * if algorithm gets stuck then last value from the stack is popped and the function calls itself again
+            * but now the code runs from the point where the recursion at that point ended up.
+            *also checks if the algorithm is solved, if yes, the returns. Also checks if the algorithm ended up at the starting point
+            * if yes, then algorithm could not be solved.
+            * each correct cordinate in the maze is storied in the stack.
+            *  */
             if (maze[i][j] == ' ')
                 maze[i][j] = '.';
             if (maze[i][j + 1] == ' ') {
@@ -108,8 +120,9 @@ public class MazeSolver {
     }
 
 
-    private void charToString(){
+    public void getResult(){
         if (solved){
+            /* if the algorithm is solved then fill all the spaces in the unsolved maze with the dots in the cordinates located in the stack */
             Integer[] cords = new Integer[2];
             while(!stack.isEmpty()){
                 cords = stack.pop();
@@ -126,6 +139,7 @@ public class MazeSolver {
             System.out.println("Maze is solved");
         }
         else{
+            /* if the maze is unsolvable, then print out the path that algorithm traversed through the maze */
             System.out.println("\n\n");
             for(int k = 0;k < rows;k++){
                 for (int n = 0;n < cols;n++){
@@ -136,10 +150,6 @@ public class MazeSolver {
 
             System.out.println("The maze could not be solved");
         }
-
-    }
-    public void getResult(){
-        charToString();
     }
 }
 
